@@ -59,10 +59,8 @@ def main():
         exit(1)
 
     try:
-        # Парсим XML
         root = ET.fromstring(xml_data)
 
-        # Получаем текущую дату и время
         current_utc_time = datetime.now(timezone.utc)
         today = current_utc_time.date()
 
