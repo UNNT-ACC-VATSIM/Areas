@@ -1,17 +1,8 @@
 {
     "notice_info": {
-        "valid_wef": "2025-03-20T21:24:07Z",
-        "valid_til": "2025-03-20T22:24:07Z",
-        "released_on": "2025-03-20T21:24:07Z"
+        "valid_wef": "2025-03-20T22:26:54Z",
+        "valid_til": "2025-03-20T23:26:54Z",
+        "released_on": "2025-03-20T22:26:54Z"
     },
-    "areas": [
-        {
-            "name": "UNR1143",
-            "minimum_fl": 0,
-            "maximum_fl": 16,
-            "start_datetime": "2025-03-20T00:00:00Z",
-            "end_datetime": "2025-03-20T22:00:00Z",
-            "remark": "AMSL"
-        }
-    ]
+    "areas": []
 }
