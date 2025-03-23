@@ -3,9 +3,11 @@ import requests
 from datetime import datetime, timedelta, timezone
 import os
 
+# Функция для преобразования UNIX-времени в строку ISO 8601
 def unix_to_iso(unix_time):
     return datetime.fromtimestamp(unix_time, tz=timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 
+# Функция для преобразования высоты в зависимости от единиц измерения
 def convert_height(value, unit):
     if unit == "ftqne":
         return round(value / 100)
@@ -15,17 +17,34 @@ def convert_height(value, unit):
         print(f"Неизвестная единица измерения: {unit}")
         return value
 
+# Функция для генерации valid_wef и valid_til
+def generate_valid_times():
+    # Текущая дата и время в формате ISO 8601
+    valid_wef = datetime.now(timezone.utc)
+    valid_til = valid_wef + timedelta(hours=3)
+    
+    # Преобразуем в строки ISO 8601
+    valid_wef_iso = valid_wef.strftime('%Y-%m-%dT%H:%M:%SZ')
+    valid_til_iso = valid_til.strftime('%Y-%m-%dT%H:%M:%SZ')
+    
+    return valid_wef_iso, valid_til_iso
+
+# Настройки прокси
 proxies = {
     "http": os.getenv("PROXY_URL"),
     "https": os.getenv("PROXY_HTTPS_URL")
 }
 
+# URL для получения исходных данных
 url = os.getenv("API_URL_SPPI_IVP_RF")
+
+# Заголовки
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
     "Authorization": f"Bearer {os.getenv('API_TOKEN')}"
 }
 
+# Загрузка данных с сервера через прокси
 try:
     response = requests.get(url, headers=headers, proxies=proxies)
     response.raise_for_status()
@@ -36,12 +55,17 @@ except requests.exceptions.RequestException as e:
 
 input_data = response.json()
 
+# Определяем текущую дату и дату следующего дня
 current_date = datetime.now(timezone.utc).date()
 next_date = current_date + timedelta(days=1)
 
+# Создаем список для хранения всех зон
 output_areas = []
+
+# Переменная для хранения времени окончания последней зоны
 latest_end_time = None
 
+# Обработка каждой зоны
 for zone in input_data["data"]:
     areas_time = zone.get("areas_time", "")
     time_ranges = areas_time.split("\n")[1:-1]
@@ -90,16 +114,24 @@ for zone in input_data["data"]:
             
             current_date_in_range += timedelta(days=1)
 
+# Генерация valid_wef и valid_til
+valid_wef, valid_til = generate_valid_times()
+
+# Формируем итоговый JSON
 output_data = {
     "notice_info": {
-        "released_on": unix_to_iso(int(datetime.now(timezone.utc).timestamp()))
+        "released_on": unix_to_iso(int(datetime.now(timezone.utc).timestamp())),
+        "valid_wef": valid_wef,
+        "valid_til": valid_til
     },
     "areas": output_areas
 }
 
+# Запись результата в файл output.json
 with open("output.json", "w", encoding="utf-8") as file:
     json.dump(output_data, file, ensure_ascii=False, indent=4)
 
+# Вывод содержимого файла output.json
 print("Итоговый файл output.json:")
 with open("output.json", "r", encoding="utf-8") as file:
     print(file.read())
