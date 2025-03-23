@@ -1,132 +1,105 @@
-import os
-import requests
-import xml.etree.ElementTree as ET
 import json
+import requests
 from datetime import datetime, timedelta, timezone
+import os
 
-def extract_level(level_str):
-    if not level_str:
-        return 0
+def unix_to_iso(unix_time):
+    return datetime.fromtimestamp(unix_time, tz=timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 
-    if "AGL" in level_str or "AMSL" in level_str:
-        numeric_value = int(level_str.replace("AGL", "").replace("AMSL", ""))
-        return int((numeric_value * 3) / 100)
-    elif "F" in level_str:
-        return int(level_str.replace("F", ""))
-    return 0
-
-def determine_remark(level_str):
-    if not level_str:
-        return ""
-
-    if "AGL" in level_str:
-        return "AGL"
-    elif "AMSL" in level_str:
-        return "AMSL"
-    elif "F" in level_str:
-        return "FL"
+def convert_height(value, unit):
+    if unit == "ftqne":
+        return round(value / 100)
+    elif unit in ["mamsl", "magl"]:
+        return round((value * 3) / 100)
     else:
-        return ""
+        print(f"Неизвестная единица измерения: {unit}")
+        return value
 
-def fetch_xml_data(url):
-    proxy_url = os.getenv("PROXY_URL")
-    if not proxy_url:
-        print("Ошибка: Переменная окружения PROXY_URL не найдена.")
-        return None
+proxies = {
+    "http": os.getenv("PROXY_URL"),
+    "https": os.getenv("PROXY_HTTPS_URL")
+}
 
-    proxies = {
-        "http": proxy_url,
-        "https": proxy_url,
-    }
+url = os.getenv("API_URL_SPPI_IVP_RF")
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+    "Authorization": f"Bearer {os.getenv('API_TOKEN')}"
+}
 
-    try:
-        response = requests.get(url, proxies=proxies, timeout=10)
-        response.raise_for_status()
-        return response.text
-    except requests.exceptions.RequestException as e:
-        print(f"Ошибка при загрузке данных: {e}")
-        return None
+try:
+    response = requests.get(url, headers=headers, proxies=proxies)
+    response.raise_for_status()
+except requests.exceptions.RequestException as e:
+    print(f"Статус код: {response.status_code}")
+    print(f"Текст ответа: {response.text}")
+    raise Exception(f"Ошибка при загрузке данных через прокси: {e}")
 
-def main():
-    api_url = os.getenv("API_URL_SPPI_IVP_RF")
-    if not api_url:
-        print("Ошибка: Переменная окружения API_URL_SPPI_IVP_RF не найдена.")
-        exit(1)
+input_data = response.json()
 
-    xml_data = fetch_xml_data(api_url)
-    if not xml_data:
-        print("Не удалось загрузить XML данные.")
-        exit(1)
+current_date = datetime.now(timezone.utc).date()
+next_date = current_date + timedelta(days=1)
 
-    try:
-        root = ET.fromstring(xml_data)
+output_areas = []
+latest_end_time = None
 
-        current_utc_time = datetime.now(timezone.utc)
-        today = current_utc_time.date()
+for zone in input_data["data"]:
+    areas_time = zone.get("areas_time", "")
+    time_ranges = areas_time.split("\n")[1:-1]
+    
+    for time_range in time_ranges:
+        try:
+            date_range, time_interval = time_range.strip().split(" ")
+            start_date_str, end_date_str = date_range.split("-")
+            start_time_str, end_time_str = time_interval.split("-")
+        except ValueError:
+            continue
+        
+        try:
+            start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
+            end_date = datetime.strptime(end_date_str, "%d.%m.%Y").date()
+        except ValueError:
+            continue
 
-        areas = []
+        if not (start_date <= next_date and end_date >= current_date):
+            continue
+        
+        current_date_in_range = max(start_date, current_date)
+        while current_date_in_range <= min(end_date, next_date):
+            day_start = current_date_in_range.strftime("%Y-%m-%d") + "T" + start_time_str + ":00Z"
+            day_end = current_date_in_range.strftime("%Y-%m-%d") + "T" + end_time_str + ":00Z"
+            
+            low_level_unit = zone["low_level"]["unit"]
+            high_level_unit = zone["high_level"]["unit"]
+            
+            minimum_fl = convert_height(zone["low_level"]["value"], low_level_unit)
+            maximum_fl = convert_height(zone["high_level"]["value"], high_level_unit)
+            
+            output_areas.append({
+                "name": zone["name"],
+                "minimum_fl": minimum_fl,
+                "maximum_fl": maximum_fl,
+                "start_datetime": day_start,
+                "end_datetime": day_end,
+                "remark": low_level_unit.upper()
+            })
+            
+            latest_end_time = max(
+                latest_end_time or datetime.min.replace(tzinfo=timezone.utc),
+                datetime.strptime(day_end, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+            )
+            
+            current_date_in_range += timedelta(days=1)
 
-        for tra in root.findall("tra"):
-            zc = tra.find("zc").text.strip() if tra.find("zc") is not None else ""
+output_data = {
+    "notice_info": {
+        "released_on": unix_to_iso(int(datetime.now(timezone.utc).timestamp()))
+    },
+    "areas": output_areas
+}
 
-            if "UNNT" not in zc:
-                continue
+with open("output.json", "w", encoding="utf-8") as file:
+    json.dump(output_data, file, ensure_ascii=False, indent=4)
 
-            area_code = tra.find("areacode").text.strip() if tra.find("areacode") is not None else ""
-            level_from = tra.find("levelfrom").text if tra.find("levelfrom") is not None else ""
-            level_to = tra.find("levelto").text if tra.find("levelto") is not None else ""
-            date_from = tra.find("datefrom").text if tra.find("datefrom") is not None else ""
-            date_to = tra.find("dateto").text if tra.find("dateto") is not None else ""
-
-            try:
-                start_datetime = datetime.strptime(date_from, "%Y-%m-%dT%H:%MZ").replace(tzinfo=timezone.utc)
-                end_datetime = datetime.strptime(date_to, "%Y-%m-%dT%H:%MZ").replace(tzinfo=timezone.utc)
-            except ValueError:
-                print(f"Ошибка при парсинге времени: date_from={date_from}, date_to={date_to}")
-                continue
-
-            if start_datetime.date() <= today <= end_datetime.date():
-                if start_datetime <= current_utc_time <= end_datetime:
-                    start_datetime_iso = start_datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
-                    end_datetime_iso = end_datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
-
-                    remark_from = determine_remark(level_from)
-                    remark_to = determine_remark(level_to)
-
-                    if remark_from == remark_to:
-                        remark = remark_from
-                    else:
-                        remark = f"{remark_from}, {remark_to}".strip(", ")
-
-                    areas.append({
-                        "name": area_code,
-                        "minimum_fl": extract_level(level_from),
-                        "maximum_fl": extract_level(level_to),
-                        "start_datetime": start_datetime_iso,
-                        "end_datetime": end_datetime_iso,
-                        "remark": remark
-                    })
-
-        valid_wef = current_utc_time.strftime("%Y-%m-%dT%H:%M:%SZ")
-        valid_til = (current_utc_time + timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
-        released_on = valid_wef
-
-        result = {
-            "notice_info": {
-                "valid_wef": valid_wef,
-                "valid_til": valid_til,
-                "released_on": released_on
-            },
-            "areas": areas
-        }
-
-        with open("output.json", "w", encoding="utf-8") as json_file:
-            json.dump(result, json_file, indent=4, ensure_ascii=False)
-
-        print("Данные успешно сохранены в output.json")
-    except Exception as e:
-        print(f"Ошибка при обработке XML данных: {e}")
-
-
-if __name__ == "__main__":
-    main()
+print("Итоговый файл output.json:")
+with open("output.json", "r", encoding="utf-8") as file:
+    print(file.read())
