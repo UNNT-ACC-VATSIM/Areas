@@ -1,13 +1,12 @@
-name: Run aup_upload.py and Commit output.json Every 3 Hours
+name: Run aup_upload.py and Commit All Changes Every 3 Hours
 
 on:
   schedule:
-    - cron: '0 */3 * * *' 
+    - cron: '0 */3 * * *'  # Запуск каждые 3 часа
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
 
 jobs:
   build:
@@ -40,15 +39,15 @@ jobs:
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
 
-    - name: Check if output.json has changed
+    - name: Check if any changes detected
       id: check_changes
       run: |
         git fetch origin main
-        git diff --quiet HEAD origin/main -- output.json || echo "changes_detected=true" >> $GITHUB_ENV
+        git diff --quiet HEAD origin/main || echo "changes_detected=true" >> $GITHUB_ENV
 
-    - name: Commit and push changes to output.json
+    - name: Commit and push all changes
       if: env.changes_detected == 'true'
       run: |
-        git add output.json
-        git commit -m "Update output.json at $(date +'%Y-%m-%d %H:%M:%S')"
+        git add .
+        git commit -m "Update files at $(date +'%Y-%m-%d %H:%M:%S')"
         git push origin main
