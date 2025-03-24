@@ -12,7 +12,7 @@ def convert_height(value, unit):
     if unit == "ftqne":
         return round(value / 100)
     elif unit in ["mamsl", "magl"]:
-        return round((value * 3) / 100)
+        return round((value * 3.28) / 100)
     else:
         print(f"Неизвестная единица измерения: {unit}")
         return value
