@@ -1,10 +1,10 @@
 name: Run aup_upload Script
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+ # push:
+   # branches: [ "main" ]
+ # pull_request:
+   # branches: [ "main" ]
   schedule:
     - cron: '0 */3 * * *'  # Запуск каждые 3 часа (в 00 минут каждые 3-й часа)
 
