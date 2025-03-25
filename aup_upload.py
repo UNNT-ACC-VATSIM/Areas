@@ -72,48 +72,63 @@ for zone in input_data["data"]:
     
     for time_range in time_ranges:
         try:
-            date_range, time_interval = time_range.strip().split(" ")
-            start_date_str, end_date_str = date_range.split("-")
-            start_time_str, end_time_str = time_interval.split("-")
-        except ValueError:
-            continue
-        
-        try:
-            start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
-            end_date = datetime.strptime(end_date_str, "%d.%m.%Y").date()
-        except ValueError:
-            continue
+            # Проверяем формат строки: либо "дата-дата время-время", либо "дата время-время"
+            if "-" in time_range and ":" in time_range:
+                parts = time_range.strip().split(" ")
+                if len(parts) == 2:  # Формат "дата время-время"
+                    date_str, time_interval = parts
+                    start_date_str = end_date_str = date_str
+                    start_time_str, end_time_str = time_interval.split("-")
+                elif len(parts) == 3:  # Формат "дата-дата время-время"
+                    date_range, time_interval = parts
+                    start_date_str, end_date_str = date_range.split("-")
+                    start_time_str, end_time_str = time_interval.split("-")
+                else:
+                    continue  # Пропускаем некорректные строки
+            else:
+                continue  # Пропускаем строки, которые не содержат нужного формата
+            
+            # Преобразуем даты в объекты datetime.date
+            try:
+                start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
+                end_date = datetime.strptime(end_date_str, "%d.%m.%Y").date()
+            except ValueError:
+                continue  # Пропускаем строки с некорректными датами
 
-        if not (start_date <= next_date and end_date >= current_date):
-            continue
-        
-        current_date_in_range = max(start_date, current_date)
-        while current_date_in_range <= min(end_date, next_date):
-            day_start = current_date_in_range.strftime("%Y-%m-%d") + "T" + start_time_str + ":00Z"
-            day_end = current_date_in_range.strftime("%Y-%m-%d") + "T" + end_time_str + ":00Z"
+            # Проверяем, попадает ли диапазон дат в текущий или следующий день
+            if not (start_date <= next_date and end_date >= current_date):
+                continue
             
-            low_level_unit = zone["low_level"]["unit"]
-            high_level_unit = zone["high_level"]["unit"]
-            
-            minimum_fl = convert_height(zone["low_level"]["value"], low_level_unit)
-            maximum_fl = convert_height(zone["high_level"]["value"], high_level_unit)
-            
-            output_areas.append({
-                "name": zone["name"],
-                "minimum_fl": minimum_fl,
-                "maximum_fl": maximum_fl,
-                "start_datetime": day_start,
-                "end_datetime": day_end,
-                "remark": low_level_unit.upper()
-            })
-            
-            latest_end_time = max(
-                latest_end_time or datetime.min.replace(tzinfo=timezone.utc),
-                datetime.strptime(day_end, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
-            )
-            
-            current_date_in_range += timedelta(days=1)
+            current_date_in_range = max(start_date, current_date)
+            while current_date_in_range <= min(end_date, next_date):
+                day_start = current_date_in_range.strftime("%Y-%m-%d") + "T" + start_time_str + ":00Z"
+                day_end = current_date_in_range.strftime("%Y-%m-%d") + "T" + end_time_str + ":00Z"
+                
+                low_level_unit = zone["low_level"]["unit"]
+                high_level_unit = zone["high_level"]["unit"]
+                
+                minimum_fl = convert_height(zone["low_level"]["value"], low_level_unit)
+                maximum_fl = convert_height(zone["high_level"]["value"], high_level_unit)
+                
+                output_areas.append({
+                    "name": zone["name"],
+                    "minimum_fl": minimum_fl,
+                    "maximum_fl": maximum_fl,
+                    "start_datetime": day_start,
+                    "end_datetime": day_end,
+                    "remark": low_level_unit.upper()
+                })
+                
+                latest_end_time = max(
+                    latest_end_time or datetime.min.replace(tzinfo=timezone.utc),
+                    datetime.strptime(day_end, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+                )
+                
+                current_date_in_range += timedelta(days=1)
 
+        except Exception as e:
+            print(f"Ошибка при обработке строки '{time_range}': {e}")
+            continue
 # Генерация valid_wef и valid_til
 valid_wef, valid_til = generate_valid_times()
 
