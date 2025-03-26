@@ -22,11 +22,11 @@ def generate_valid_times():
     # Текущая дата и время в формате ISO 8601
     valid_wef = datetime.now(timezone.utc)
     valid_til = valid_wef + timedelta(hours=3)
-
+    
     # Преобразуем в строки ISO 8601
     valid_wef_iso = valid_wef.strftime('%Y-%m-%dT%H:%M:%SZ')
     valid_til_iso = valid_til.strftime('%Y-%m-%dT%H:%M:%SZ')
-
+    
     return valid_wef_iso, valid_til_iso
 
 # Настройки прокси
@@ -68,90 +68,48 @@ latest_end_time = None
 # Обработка каждой зоны
 for zone in input_data["data"]:
     areas_time = zone.get("areas_time", "")
-    time_ranges = areas_time.split("\n")[1:-1]  # Убираем первую и последнюю пустые строки
-
+    time_ranges = areas_time.split("\n")[1:-1]
+    
     for time_range in time_ranges:
         try:
-            # Очищаем строку от лишнего текста (например, "Работа утверждена:")
-            cleaned_time_range = time_range.strip()
-            
-            # Проверяем, содержит ли строка временной диапазон
-            if "-" not in cleaned_time_range:
-                continue  # Пропускаем строки без временного диапазона
-            
             # Разделяем строку на дату и временной интервал
-            parts = cleaned_time_range.split(" ")
-            if len(parts) < 2:
-                continue  # Пропускаем строки с некорректным форматом
+            date_part, time_interval = time_range.strip().split(" ")
             
-            date_part = parts[0]
-            time_interval = parts[1]
-
             # Проверяем формат даты
-            if "-" in date_part and "-" in time_interval:
-                # Формат "датаначало времяначало-датаокончания времяокончания"
-                start_date_str, end_date_str = date_part.split("-")
-                start_time_str, end_time_str = time_interval.split("-")
-
-                start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
-                end_date = datetime.strptime(end_date_str, "%d.%m.%Y").date()
-
-            elif "-" in date_part:
+            if "-" in date_part:
                 # Формат "дата-дата времяначало-времяокончания"
                 start_date_str, end_date_str = date_part.split("-")
                 start_time_str, end_time_str = time_interval.split("-")
-
+                
                 start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
                 end_date = datetime.strptime(end_date_str, "%d.%m.%Y").date()
-
             else:
                 # Формат "дата времяначало-времяокончания"
                 start_date_str = end_date_str = date_part
                 start_time_str, end_time_str = time_interval.split("-")
-
+                
                 start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
                 end_date = start_date  # Начальная и конечная дата совпадают
-
-            # Проверяем формат времени (HH:MM)
-            if not (len(start_time_str) == 5 and len(end_time_str) == 5 and
-                    start_time_str[2] == ":" and end_time_str[2] == ":"):
-                raise ValueError("Некорректный формат времени")
-
-        except ValueError as e:
-            print(f"Ошибка обработки временного интервала: {e}")
-            continue  # Пропускаем некорректные данные
+            
+        except ValueError:
+            # Если формат не соответствует ни одному из ожидаемых, пропускаем
+            continue
 
         # Проверяем, попадает ли текущая дата в диапазон
         if not (start_date <= next_date and end_date >= current_date):
             continue
-
+        
         current_date_in_range = max(start_date, current_date)
-        iteration_count = 0  # Счетчик итераций для защиты от зацикливания
-
         while current_date_in_range <= min(end_date, next_date):
-            # Защита от зацикливания
-            if iteration_count > 365:  # Максимум 365 дней
-                print("Обнаружено зацикливание. Прерывание цикла.")
-                break
-
-            # Формируем строки day_start и day_end
             day_start = current_date_in_range.strftime("%Y-%m-%d") + "T" + start_time_str + ":00Z"
             day_end = current_date_in_range.strftime("%Y-%m-%d") + "T" + end_time_str + ":00Z"
-
-            # Проверяем корректность форматов
-            try:
-                datetime.strptime(day_start, "%Y-%m-%dT%H:%M:%SZ")
-                datetime.strptime(day_end, "%Y-%m-%dT%H:%M:%SZ")
-            except ValueError as e:
-                print(f"Ошибка формата времени: {e}")
-                break  # Прерываем цикл при ошибке формата
-
+            
             low_level_unit = zone["low_level"]["unit"]
             high_level_unit = zone["high_level"]["unit"]
-
+            
             minimum_fl = convert_height(zone["low_level"]["value"], low_level_unit)
             maximum_fl = convert_height(zone["high_level"]["value"], high_level_unit)
-
+            
             output_areas.append({
                 "name": zone["name"],
                 "minimum_fl": minimum_fl,
@@ -160,15 +118,13 @@ for zone in input_data["data"]:
                 "end_datetime": day_end,
                 "remark": low_level_unit.upper()
             })
-
+            
             latest_end_time = max(
                 latest_end_time or datetime.min.replace(tzinfo=timezone.utc),
                 datetime.strptime(day_end, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
             )
-
-            # Переходим к следующей дате
+            
             current_date_in_range += timedelta(days=1)
-            iteration_count += 1
 
 # Генерация valid_wef и valid_til
 valid_wef, valid_til = generate_valid_times()
