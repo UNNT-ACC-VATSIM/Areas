@@ -68,12 +68,24 @@ latest_end_time = None
 # Обработка каждой зоны
 for zone in input_data["data"]:
     areas_time = zone.get("areas_time", "")
-    time_ranges = areas_time.split("\n")[1:-1]
+    time_ranges = areas_time.split("\n")[1:-1]  # Убираем первую и последнюю пустые строки
 
     for time_range in time_ranges:
         try:
+            # Очищаем строку от лишнего текста (например, "Работа утверждена:")
+            cleaned_time_range = time_range.strip()
+            
+            # Проверяем, содержит ли строка временной диапазон
+            if "-" not in cleaned_time_range:
+                continue  # Пропускаем строки без временного диапазона
+            
             # Разделяем строку на дату и временной интервал
-            date_part, time_interval = time_range.strip().split(" ")
+            parts = cleaned_time_range.split(" ")
+            if len(parts) < 2:
+                continue  # Пропускаем строки с некорректным форматом
+            
+            date_part = parts[0]
+            time_interval = parts[1]
 
             # Проверяем формат даты
             if "-" in date_part and "-" in time_interval:
