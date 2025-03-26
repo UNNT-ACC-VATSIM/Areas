@@ -112,16 +112,28 @@ for zone in input_data["data"]:
                 start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
                 end_date = start_date  # Начальная и конечная дата совпадают
 
-        except ValueError:
-            # Если формат не соответствует ни одному из ожидаемых, пропускаем
-            continue
+            # Проверяем формат времени (HH:MM)
+            if not (len(start_time_str) == 5 and len(end_time_str) == 5 and
+                    start_time_str[2] == ":" and end_time_str[2] == ":"):
+                raise ValueError("Некорректный формат времени")
+
+        except ValueError as e:
+            print(f"Ошибка обработки временного интервала: {e}")
+            continue  # Пропускаем некорректные данные
 
         # Проверяем, попадает ли текущая дата в диапазон
         if not (start_date <= next_date and end_date >= current_date):
             continue
 
         current_date_in_range = max(start_date, current_date)
+        iteration_count = 0  # Счетчик итераций для защиты от зацикливания
+
         while current_date_in_range <= min(end_date, next_date):
+            # Защита от зацикливания
+            if iteration_count > 365:  # Максимум 365 дней
+                print("Обнаружено зацикливание. Прерывание цикла.")
+                break
+
             # Формируем строки day_start и day_end
             day_start = current_date_in_range.strftime("%Y-%m-%d") + "T" + start_time_str + ":00Z"
             day_end = current_date_in_range.strftime("%Y-%m-%d") + "T" + end_time_str + ":00Z"
@@ -132,7 +144,7 @@ for zone in input_data["data"]:
                 datetime.strptime(day_end, "%Y-%m-%dT%H:%M:%SZ")
             except ValueError as e:
                 print(f"Ошибка формата времени: {e}")
-                continue  # Пропускаем некорректные данные
+                break  # Прерываем цикл при ошибке формата
 
             low_level_unit = zone["low_level"]["unit"]
             high_level_unit = zone["high_level"]["unit"]
@@ -154,7 +166,9 @@ for zone in input_data["data"]:
                 datetime.strptime(day_end, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
             )
 
+            # Переходим к следующей дате
             current_date_in_range += timedelta(days=1)
+            iteration_count += 1
 
 # Генерация valid_wef и valid_til
 valid_wef, valid_til = generate_valid_times()
