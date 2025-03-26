@@ -122,8 +122,17 @@ for zone in input_data["data"]:
 
         current_date_in_range = max(start_date, current_date)
         while current_date_in_range <= min(end_date, next_date):
+            # Формируем строки day_start и day_end
             day_start = current_date_in_range.strftime("%Y-%m-%d") + "T" + start_time_str + ":00Z"
             day_end = current_date_in_range.strftime("%Y-%m-%d") + "T" + end_time_str + ":00Z"
+
+            # Проверяем корректность форматов
+            try:
+                datetime.strptime(day_start, "%Y-%m-%dT%H:%M:%SZ")
+                datetime.strptime(day_end, "%Y-%m-%dT%H:%M:%SZ")
+            except ValueError as e:
+                print(f"Ошибка формата времени: {e}")
+                continue  # Пропускаем некорректные данные
 
             low_level_unit = zone["low_level"]["unit"]
             high_level_unit = zone["high_level"]["unit"]
