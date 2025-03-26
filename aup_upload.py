@@ -71,40 +71,38 @@ for zone in input_data["data"]:
     time_ranges = areas_time.split("\n")[1:-1]
     
     for time_range in time_ranges:
-        try:
-            # Разделяем строку на две части
-            start_part, end_part = time_range.strip().split("-")
-            
-            # Проверяем формат "датаначало времяначала-датаокончания времяокончания"
-            if " " in start_part and " " in end_part:
-                start_date_str, start_time_str = start_part.split(" ")
-                end_date_str, end_time_str = end_part.split(" ")
-                
-                start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
-                end_date = datetime.strptime(end_date_str, "%d.%m.%Y").date()
-            
-            # Проверяем формат "дата-дата времяначало-времяокончания"
-            elif "-" in start_part:
-                date_part, time_interval = time_range.strip().split(" ")
-                start_date_str, end_date_str = date_part.split("-")
-                start_time_str, end_time_str = time_interval.split("-")
-                
-                start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
-                end_date = datetime.strptime(end_date_str, "%d.%m.%Y").date()
-            
-            # Проверяем формат "дата времяначало-времяокончания"
-            else:
-                date_part, time_interval = time_range.strip().split(" ")
-                start_date_str = end_date_str = date_part
-                start_time_str, end_time_str = time_interval.split("-")
-                
-                start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
-                end_date = start_date  # Начальная и конечная дата совпадают
-            
-        except ValueError:
-            # Если формат не соответствует ни одному из ожидаемых, пропускаем
-            continue
+    try:
+        # Разделяем строку на дату и временной интервал
+        date_part, time_interval = time_range.strip().split(" ")
 
+        # Проверяем формат даты
+        if "-" in date_part and "-" in time_interval:
+            # Формат "датаначало времяначало-датаокончания времяокончания"
+            start_date_str, end_date_str = date_part.split("-")
+            start_time_str, end_time_str = time_interval.split("-")
+
+            start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
+            end_date = datetime.strptime(end_date_str, "%d.%m.%Y").date()
+
+        elif "-" in date_part:
+            # Формат "дата-дата времяначало-времяокончания"
+            start_date_str, end_date_str = date_part.split("-")
+            start_time_str, end_time_str = time_interval.split("-")
+
+            start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
+            end_date = datetime.strptime(end_date_str, "%d.%m.%Y").date()
+
+        else:
+            # Формат "дата времяначало-времяокончания"
+            start_date_str = end_date_str = date_part
+            start_time_str, end_time_str = time_interval.split("-")
+
+            start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
+            end_date = start_date  # Начальная и конечная дата совпадают
+
+    except ValueError:
+        # Если формат не соответствует ни одному из ожидаемых, пропускаем
+        continue
         # Проверяем, попадает ли текущая дата в диапазон
         if not (start_date <= next_date and end_date >= current_date):
             continue
