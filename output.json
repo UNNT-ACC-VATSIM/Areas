@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "released_on": "2025-03-28T18:21:13Z",
-        "valid_wef": "2025-03-28T18:21:13Z",
-        "valid_til": "2025-03-28T21:21:13Z"
+        "released_on": "2025-03-28T21:13:44Z",
+        "valid_wef": "2025-03-28T21:13:44Z",
+        "valid_til": "2025-03-29T00:13:44Z"
     },
     "areas": [
         {
@@ -836,14 +836,6 @@
             "start_datetime": "2025-03-29T03:00:00Z",
             "end_datetime": "2025-03-29T14:00:00Z",
             "remark": "MAGL"
-        },
-        {
-            "name": "KO081503",
-            "minimum_fl": 0,
-            "maximum_fl": 10,
-            "start_datetime": "2025-03-28T17:00:00Z",
-            "end_datetime": "2025-03-28T20:00:00Z",
-            "remark": "MAMSL"
         },
         {
             "name": "UNR1196",
