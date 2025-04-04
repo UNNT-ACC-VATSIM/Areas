@@ -2,6 +2,7 @@ import json
 import requests
 from datetime import datetime, timedelta, timezone
 import os
+import re
 
 # Функция для преобразования UNIX-времени в строку ISO 8601
 def unix_to_iso(unix_time):
@@ -17,17 +18,15 @@ def convert_height(value, unit):
         print(f"Неизвестная единица измерения: {unit}")
         return value
 
+# Функция для удаления текста в скобках
+def remove_bracketed_text(text):
+    return re.sub(r'\([^)]*\)', '', text).strip()
+
 # Функция для генерации valid_wef и valid_til
 def generate_valid_times():
-    # Текущая дата и время в формате ISO 8601
     valid_wef = datetime.now(timezone.utc)
     valid_til = valid_wef + timedelta(hours=3)
-    
-    # Преобразуем в строки ISO 8601
-    valid_wef_iso = valid_wef.strftime('%Y-%m-%dT%H:%M:%SZ')
-    valid_til_iso = valid_til.strftime('%Y-%m-%dT%H:%M:%SZ')
-    
-    return valid_wef_iso, valid_til_iso
+    return valid_wef.strftime('%Y-%m-%dT%H:%M:%SZ'), valid_til.strftime('%Y-%m-%dT%H:%M:%SZ')
 
 # Настройки прокси
 proxies = {
@@ -62,114 +61,91 @@ next_date = current_date + timedelta(days=1)
 # Создаем список для хранения всех зон
 output_areas = []
 
-# Переменная для хранения времени окончания последней зоны
-latest_end_time = None
-
 # Обработка каждой зоны
 for zone in input_data["data"]:
     areas_time = zone.get("areas_time", "")
-    time_ranges = areas_time.split("\n")[1:-1]
-    
+    time_ranges = areas_time.split("\n")[1:-1]  # Убираем первую и последнюю пустые строки
+
     for time_range in time_ranges:
         try:
-            # Удаляем лишние пробелы
-            time_range = time_range.strip()
-            
+            # Удаляем лишние пробелы и текст в скобках
+            time_range = remove_bracketed_text(time_range.strip())
+            if not time_range:
+                continue  # Пропускаем пустые строки
+
             # Проверяем формат "дата времяначало-дата времяокончания"
             if "-" in time_range and " " in time_range:
                 parts = time_range.split("-")
                 if len(parts) == 2 and " " in parts[0] and " " in parts[1]:
-                    # Формат "дата времяначало-дата времяокончания"
-                    start_part, end_part = parts
-                    
                     # Разделяем дату и время для начала и конца
+                    start_part, end_part = parts
                     start_date_str, start_time_str = start_part.split(" ")
                     end_date_str, end_time_str = end_part.split(" ")
-                    
+
                     # Преобразуем строки в объекты datetime
                     start_datetime = datetime.strptime(f"{start_date_str} {start_time_str}", "%d.%m.%Y %H:%M").replace(tzinfo=timezone.utc)
                     end_datetime = datetime.strptime(f"{end_date_str} {end_time_str}", "%d.%m.%Y %H:%M").replace(tzinfo=timezone.utc)
-                    
+
                     # Проверяем, попадает ли текущая дата в диапазон
                     if not (start_datetime.date() <= next_date and end_datetime.date() >= current_date):
                         continue
-                    
-                    # Если дата начала и дата окончания в разные дни, сохраняем как единый интервал
-                    day_start = start_datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
-                    day_end = end_datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
-                    
+
+                    # Добавляем зону в выходной список
                     low_level_unit = zone["low_level"]["unit"]
                     high_level_unit = zone["high_level"]["unit"]
-                    
-                    minimum_fl = convert_height(zone["low_level"]["value"], low_level_unit)
-                    maximum_fl = convert_height(zone["high_level"]["value"], high_level_unit)
-                    
+
                     output_areas.append({
                         "name": zone["name"],
-                        "minimum_fl": minimum_fl,
-                        "maximum_fl": maximum_fl,
-                        "start_datetime": day_start,
-                        "end_datetime": day_end,
+                        "minimum_fl": convert_height(zone["low_level"]["value"], low_level_unit),
+                        "maximum_fl": convert_height(zone["high_level"]["value"], high_level_unit),
+                        "start_datetime": start_datetime.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                        "end_datetime": end_datetime.strftime("%Y-%m-%dT%H:%M:%SZ"),
                         "remark": low_level_unit.upper()
                     })
-                    
-                    latest_end_time = max(
-                        latest_end_time or datetime.min.replace(tzinfo=timezone.utc),
-                        end_datetime
-                    )
                     continue
-                
+
             # Обработка других форматов (например, "дата-дата времяначало-времяокончания")
             date_part, time_interval = time_range.split(" ")
-            
+
             if "-" in date_part:
                 # Формат "дата-дата времяначало-времяокончания"
                 start_date_str, end_date_str = date_part.split("-")
                 start_time_str, end_time_str = time_interval.split("-")
-                
+
                 start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
                 end_date = datetime.strptime(end_date_str, "%d.%m.%Y").date()
             else:
                 # Формат "дата времяначало-времяокончания"
                 start_date_str = end_date_str = date_part
                 start_time_str, end_time_str = time_interval.split("-")
-                
+
                 start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
                 end_date = start_date  # Начальная и конечная дата совпадают
-            
+
             # Проверяем, попадает ли текущая дата в диапазон
             if not (start_date <= next_date and end_date >= current_date):
                 continue
-            
+
             current_date_in_range = max(start_date, current_date)
             while current_date_in_range <= min(end_date, next_date):
                 day_start = current_date_in_range.strftime("%Y-%m-%d") + "T" + start_time_str + ":00Z"
                 day_end = current_date_in_range.strftime("%Y-%m-%d") + "T" + end_time_str + ":00Z"
-                
+
                 low_level_unit = zone["low_level"]["unit"]
                 high_level_unit = zone["high_level"]["unit"]
-                
-                minimum_fl = convert_height(zone["low_level"]["value"], low_level_unit)
-                maximum_fl = convert_height(zone["high_level"]["value"], high_level_unit)
-                
+
                 output_areas.append({
                     "name": zone["name"],
-                    "minimum_fl": minimum_fl,
-                    "maximum_fl": maximum_fl,
+                    "minimum_fl": convert_height(zone["low_level"]["value"], low_level_unit),
+                    "maximum_fl": convert_height(zone["high_level"]["value"], high_level_unit),
                     "start_datetime": day_start,
                     "end_datetime": day_end,
                     "remark": low_level_unit.upper()
                 })
-                
-                latest_end_time = max(
-                    latest_end_time or datetime.min.replace(tzinfo=timezone.utc),
-                    datetime.strptime(day_end, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
-                )
-                
+
                 current_date_in_range += timedelta(days=1)
 
         except ValueError as e:
-            # Если формат не соответствует ни одному из ожидаемых, пропускаем
             print(f"Ошибка при обработке временного интервала '{time_range}': {e}")
             continue
 
