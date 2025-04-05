@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "released_on": "2025-04-05T01:11:28Z",
-        "valid_wef": "2025-04-05T01:11:28Z",
-        "valid_til": "2025-04-05T04:11:28Z"
+        "released_on": "2025-04-05T03:28:00Z",
+        "valid_wef": "2025-04-05T03:28:00Z",
+        "valid_til": "2025-04-05T06:28:00Z"
     },
     "areas": [
         {
@@ -1158,14 +1158,6 @@
             "remark": "MAMSL"
         },
         {
-            "name": "KO081653",
-            "minimum_fl": 0,
-            "maximum_fl": 71,
-            "start_datetime": "2025-04-04T03:00:00Z",
-            "end_datetime": "2025-04-05T02:59:00Z",
-            "remark": "MAMSL"
-        },
-        {
             "name": "KO081675",
             "minimum_fl": 0,
             "maximum_fl": 20,
@@ -1278,27 +1270,27 @@
             "remark": "MAMSL"
         },
         {
-            "name": "KO KOWER SERDOBSK",
+            "name": "KO081695-081702",
             "minimum_fl": 0,
-            "maximum_fl": 510,
-            "start_datetime": "2025-04-05T00:00:00Z",
-            "end_datetime": "2025-04-05T03:00:00Z",
+            "maximum_fl": 71,
+            "start_datetime": "2025-04-06T03:00:00Z",
+            "end_datetime": "2025-04-06T23:59:00Z",
             "remark": "MAMSL"
         },
         {
-            "name": "KO KOWER ULXQNOWSK",
+            "name": "KO081703-081710",
             "minimum_fl": 0,
-            "maximum_fl": 510,
-            "start_datetime": "2025-04-05T00:00:00Z",
-            "end_datetime": "2025-04-05T03:00:00Z",
+            "maximum_fl": 71,
+            "start_datetime": "2025-04-05T03:00:00Z",
+            "end_datetime": "2025-04-05T23:59:00Z",
             "remark": "MAMSL"
         },
         {
-            "name": "KO KOWER ENGELXS",
+            "name": "KO081703-081710",
             "minimum_fl": 0,
-            "maximum_fl": 510,
-            "start_datetime": "2025-04-05T00:00:00Z",
-            "end_datetime": "2025-04-05T03:00:00Z",
+            "maximum_fl": 71,
+            "start_datetime": "2025-04-06T00:00:00Z",
+            "end_datetime": "2025-04-06T02:59:00Z",
             "remark": "MAMSL"
         }
     ]
