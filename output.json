@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "released_on": "2025-04-06T03:31:27Z",
-        "valid_wef": "2025-04-06T03:31:27Z",
-        "valid_til": "2025-04-06T06:31:27Z"
+        "released_on": "2025-04-06T06:20:26Z",
+        "valid_wef": "2025-04-06T06:20:26Z",
+        "valid_til": "2025-04-06T09:20:26Z"
     },
     "areas": [
         {
@@ -782,14 +782,6 @@
             "remark": "MAMSL"
         },
         {
-            "name": "MR080302",
-            "minimum_fl": 0,
-            "maximum_fl": 5,
-            "start_datetime": "2025-04-06T06:00:00Z",
-            "end_datetime": "2025-04-06T11:00:00Z",
-            "remark": "MAGL"
-        },
-        {
             "name": "MR080280",
             "minimum_fl": 18,
             "maximum_fl": 25,
@@ -1270,14 +1262,6 @@
             "remark": "MAMSL"
         },
         {
-            "name": "KO081675",
-            "minimum_fl": 0,
-            "maximum_fl": 20,
-            "start_datetime": "2025-04-06T02:00:00Z",
-            "end_datetime": "2025-04-06T05:00:00Z",
-            "remark": "MAMSL"
-        },
-        {
             "name": "UNR1158",
             "minimum_fl": 0,
             "maximum_fl": 23,
@@ -1315,14 +1299,6 @@
             "maximum_fl": 16,
             "start_datetime": "2025-04-07T02:00:00Z",
             "end_datetime": "2025-04-07T11:00:00Z",
-            "remark": "MAMSL"
-        },
-        {
-            "name": "KO081713",
-            "minimum_fl": 0,
-            "maximum_fl": 13,
-            "start_datetime": "2025-04-06T03:00:00Z",
-            "end_datetime": "2025-04-06T06:00:00Z",
             "remark": "MAMSL"
         },
         {
@@ -1515,6 +1491,14 @@
             "maximum_fl": 25,
             "start_datetime": "2025-04-07T03:00:00Z",
             "end_datetime": "2025-04-07T13:00:00Z",
+            "remark": "MAMSL"
+        },
+        {
+            "name": "KO 081719-081725 UTP OMSK-S",
+            "minimum_fl": 0,
+            "maximum_fl": 71,
+            "start_datetime": "2025-04-07T03:00:00Z",
+            "end_datetime": "2025-04-07T23:59:00Z",
             "remark": "MAMSL"
         }
     ]
