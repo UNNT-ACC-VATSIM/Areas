@@ -94,10 +94,17 @@ for zone in input_data["data"]:
                     low_level_unit = zone["low_level"]["unit"]
                     high_level_unit = zone["high_level"]["unit"]
 
+                    minimum_fl = convert_height(zone["low_level"]["value"], low_level_unit)
+                    maximum_fl = convert_height(zone["high_level"]["value"], high_level_unit)
+
+                    # Проверка на максимальное значение maximum_fl
+                    if maximum_fl > 999:
+                        maximum_fl = 999
+
                     output_areas.append({
                         "name": zone["name"],
-                        "minimum_fl": convert_height(zone["low_level"]["value"], low_level_unit),
-                        "maximum_fl": convert_height(zone["high_level"]["value"], high_level_unit),
+                        "minimum_fl": minimum_fl,
+                        "maximum_fl": maximum_fl,
                         "start_datetime": start_datetime.strftime("%Y-%m-%dT%H:%M:%SZ"),
                         "end_datetime": end_datetime.strftime("%Y-%m-%dT%H:%M:%SZ"),
                         "remark": low_level_unit.upper()
@@ -134,10 +141,17 @@ for zone in input_data["data"]:
                 low_level_unit = zone["low_level"]["unit"]
                 high_level_unit = zone["high_level"]["unit"]
 
+                minimum_fl = convert_height(zone["low_level"]["value"], low_level_unit)
+                maximum_fl = convert_height(zone["high_level"]["value"], high_level_unit)
+
+                # Проверка на максимальное значение maximum_fl
+                if maximum_fl > 999:
+                    maximum_fl = 999
+
                 output_areas.append({
                     "name": zone["name"],
-                    "minimum_fl": convert_height(zone["low_level"]["value"], low_level_unit),
-                    "maximum_fl": convert_height(zone["high_level"]["value"], high_level_unit),
+                    "minimum_fl": minimum_fl,
+                    "maximum_fl": maximum_fl,
                     "start_datetime": day_start,
                     "end_datetime": day_end,
                     "remark": low_level_unit.upper()
