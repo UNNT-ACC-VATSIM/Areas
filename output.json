@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "released_on": "2025-04-12T03:28:23Z",
-        "valid_wef": "2025-04-12T03:28:23Z",
-        "valid_til": "2025-04-12T06:28:23Z"
+        "released_on": "2025-04-12T06:19:43Z",
+        "valid_wef": "2025-04-12T06:19:43Z",
+        "valid_til": "2025-04-12T09:19:43Z"
     },
     "areas": [
         {
@@ -20,14 +20,6 @@
             "start_datetime": "2025-04-13T08:00:00Z",
             "end_datetime": "2025-04-13T17:00:00Z",
             "remark": "MAGL"
-        },
-        {
-            "name": "UNR1236",
-            "minimum_fl": 0,
-            "maximum_fl": 999,
-            "start_datetime": "2025-04-12T04:10:00Z",
-            "end_datetime": "2025-04-12T04:50:00Z",
-            "remark": "MAMSL"
         },
         {
             "name": "UNR1192",
@@ -414,19 +406,27 @@
             "remark": "MAMSL"
         },
         {
-            "name": "KO081898",
+            "name": "KO081900-081907 UTP OMSK-S",
             "minimum_fl": 0,
-            "maximum_fl": 8,
-            "start_datetime": "2025-04-12T04:00:00Z",
-            "end_datetime": "2025-04-12T05:00:00Z",
+            "maximum_fl": 71,
+            "start_datetime": "2025-04-13T03:00:00Z",
+            "end_datetime": "2025-04-14T02:59:00Z",
             "remark": "MAMSL"
         },
         {
-            "name": "KO081899",
+            "name": "KO081908",
+            "minimum_fl": 8,
+            "maximum_fl": 15,
+            "start_datetime": "2025-04-12T05:30:00Z",
+            "end_datetime": "2025-04-12T08:30:00Z",
+            "remark": "MAMSL"
+        },
+        {
+            "name": "KO081910",
             "minimum_fl": 0,
-            "maximum_fl": 11,
-            "start_datetime": "2025-04-12T04:00:00Z",
-            "end_datetime": "2025-04-12T06:00:00Z",
+            "maximum_fl": 20,
+            "start_datetime": "2025-04-12T06:50:00Z",
+            "end_datetime": "2025-04-12T08:50:00Z",
             "remark": "MAMSL"
         }
     ]
