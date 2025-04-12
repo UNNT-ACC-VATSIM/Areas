@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "released_on": "2025-04-12T12:27:34Z",
-        "valid_wef": "2025-04-12T12:27:34Z",
-        "valid_til": "2025-04-12T15:27:34Z"
+        "released_on": "2025-04-12T15:14:03Z",
+        "valid_wef": "2025-04-12T15:14:03Z",
+        "valid_til": "2025-04-12T18:14:03Z"
     },
     "areas": [
         {
@@ -326,11 +326,11 @@
             "remark": "MAMSL"
         },
         {
-            "name": "KO081911 PP TALAQ",
+            "name": "KO081912",
             "minimum_fl": 0,
-            "maximum_fl": 14,
-            "start_datetime": "2025-04-12T12:00:00Z",
-            "end_datetime": "2025-04-12T14:30:00Z",
+            "maximum_fl": 30,
+            "start_datetime": "2025-04-13T01:00:00Z",
+            "end_datetime": "2025-04-13T04:00:00Z",
             "remark": "MAMSL"
         }
     ]
