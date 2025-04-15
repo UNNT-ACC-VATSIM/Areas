@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "released_on": "2025-04-15T18:20:00Z",
-        "valid_wef": "2025-04-15T18:20:00Z",
-        "valid_til": "2025-04-15T21:20:00Z"
+        "released_on": "2025-04-15T21:14:37Z",
+        "valid_wef": "2025-04-15T21:14:37Z",
+        "valid_til": "2025-04-16T00:14:37Z"
     },
     "areas": [
         {
@@ -265,24 +265,8 @@
             "name": "UNR1976",
             "minimum_fl": 0,
             "maximum_fl": 30,
-            "start_datetime": "2025-04-15T07:00:00Z",
-            "end_datetime": "2025-04-15T19:00:00Z",
-            "remark": "MAGL"
-        },
-        {
-            "name": "UNR1976",
-            "minimum_fl": 0,
-            "maximum_fl": 30,
             "start_datetime": "2025-04-16T07:00:00Z",
             "end_datetime": "2025-04-16T19:00:00Z",
-            "remark": "MAGL"
-        },
-        {
-            "name": "UNR1973",
-            "minimum_fl": 0,
-            "maximum_fl": 60,
-            "start_datetime": "2025-04-15T02:00:00Z",
-            "end_datetime": "2025-04-15T19:00:00Z",
             "remark": "MAGL"
         },
         {
@@ -395,14 +379,6 @@
             "maximum_fl": 20,
             "start_datetime": "2025-04-16T01:00:00Z",
             "end_datetime": "2025-04-16T17:00:00Z",
-            "remark": "MAGL"
-        },
-        {
-            "name": "UNR1975",
-            "minimum_fl": 0,
-            "maximum_fl": 30,
-            "start_datetime": "2025-04-15T07:00:00Z",
-            "end_datetime": "2025-04-15T19:00:00Z",
             "remark": "MAGL"
         },
         {
@@ -779,6 +755,14 @@
             "maximum_fl": 71,
             "start_datetime": "2025-04-16T03:00:00Z",
             "end_datetime": "2025-04-16T23:59:00Z",
+            "remark": "MAMSL"
+        },
+        {
+            "name": "KO081985-081988",
+            "minimum_fl": 0,
+            "maximum_fl": 33,
+            "start_datetime": "2025-04-16T07:00:00Z",
+            "end_datetime": "2025-04-16T19:00:00Z",
             "remark": "MAMSL"
         }
     ]
