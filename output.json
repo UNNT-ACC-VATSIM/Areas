@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "released_on": "2025-04-23T18:22:46Z",
-        "valid_wef": "2025-04-23T18:22:46Z",
-        "valid_til": "2025-04-23T21:22:46Z"
+        "released_on": "2025-04-23T21:14:38Z",
+        "valid_wef": "2025-04-23T21:14:38Z",
+        "valid_til": "2025-04-24T00:14:38Z"
     },
     "areas": [
         {
@@ -310,6 +310,14 @@
             "remark": "MAGL"
         },
         {
+            "name": "UTP DOSAAF BERDSK-C",
+            "minimum_fl": 0,
+            "maximum_fl": 39,
+            "start_datetime": "2025-04-24T05:00:00Z",
+            "end_datetime": "2025-04-24T12:00:00Z",
+            "remark": "MAMSL"
+        },
+        {
             "name": "UNR1194",
             "minimum_fl": 0,
             "maximum_fl": 50,
@@ -595,14 +603,6 @@
             "maximum_fl": 20,
             "start_datetime": "2025-04-24T03:30:00Z",
             "end_datetime": "2025-04-24T12:00:00Z",
-            "remark": "MAMSL"
-        },
-        {
-            "name": "KO082193-082195",
-            "minimum_fl": 0,
-            "maximum_fl": 26,
-            "start_datetime": "2025-04-23T11:00:00Z",
-            "end_datetime": "2025-04-23T20:00:00Z",
             "remark": "MAMSL"
         },
         {
