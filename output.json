@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "released_on": "2025-04-26T06:20:10Z",
-        "valid_wef": "2025-04-26T06:20:10Z",
-        "valid_til": "2025-04-26T09:20:10Z"
+        "released_on": "2025-04-26T09:14:46Z",
+        "valid_wef": "2025-04-26T09:14:46Z",
+        "valid_til": "2025-04-26T12:14:46Z"
     },
     "areas": [
         {
@@ -73,14 +73,6 @@
             "name": "UNR1196",
             "minimum_fl": 3,
             "maximum_fl": 594,
-            "start_datetime": "2025-04-26T03:00:00Z",
-            "end_datetime": "2025-04-26T14:30:00Z",
-            "remark": "MAGL"
-        },
-        {
-            "name": "UNR1196",
-            "minimum_fl": 3,
-            "maximum_fl": 594,
             "start_datetime": "2025-04-27T03:00:00Z",
             "end_datetime": "2025-04-27T14:30:00Z",
             "remark": "MAGL"
@@ -107,30 +99,6 @@
             "maximum_fl": 10,
             "start_datetime": "2025-04-27T10:00:00Z",
             "end_datetime": "2025-04-27T12:00:00Z",
-            "remark": "MAMSL"
-        },
-        {
-            "name": "MR080403",
-            "minimum_fl": 0,
-            "maximum_fl": 22,
-            "start_datetime": "2025-04-26T07:00:00Z",
-            "end_datetime": "2025-04-26T12:00:00Z",
-            "remark": "MAMSL"
-        },
-        {
-            "name": "MR080408",
-            "minimum_fl": 0,
-            "maximum_fl": 21,
-            "start_datetime": "2025-04-26T03:00:00Z",
-            "end_datetime": "2025-04-26T11:00:00Z",
-            "remark": "MAMSL"
-        },
-        {
-            "name": "MR080408",
-            "minimum_fl": 0,
-            "maximum_fl": 21,
-            "start_datetime": "2025-04-27T03:00:00Z",
-            "end_datetime": "2025-04-27T11:00:00Z",
             "remark": "MAMSL"
         },
         {
@@ -454,36 +422,12 @@
             "remark": "MAMSL"
         },
         {
-            "name": "KO082270-082273",
-            "minimum_fl": 0,
-            "maximum_fl": 7,
-            "start_datetime": "2025-04-26T04:00:00Z",
-            "end_datetime": "2025-04-26T14:00:00Z",
-            "remark": "MAMSL"
-        },
-        {
-            "name": "KO082285",
-            "minimum_fl": 0,
-            "maximum_fl": 16,
-            "start_datetime": "2025-04-26T06:00:00Z",
-            "end_datetime": "2025-04-26T09:00:00Z",
-            "remark": "MAMSL"
-        },
-        {
             "name": "UNR1197",
             "minimum_fl": 33,
             "maximum_fl": 364,
             "start_datetime": "2025-04-27T03:00:00Z",
             "end_datetime": "2025-04-27T14:30:00Z",
             "remark": "MAGL"
-        },
-        {
-            "name": "KO082286",
-            "minimum_fl": 0,
-            "maximum_fl": 10,
-            "start_datetime": "2025-04-26T04:15:00Z",
-            "end_datetime": "2025-04-26T07:15:00Z",
-            "remark": "MAMSL"
         },
         {
             "name": "KO082287-082290",
