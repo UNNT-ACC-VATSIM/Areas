@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "released_on": "2025-04-30T18:21:55Z",
-        "valid_wef": "2025-04-30T18:21:55Z",
-        "valid_til": "2025-04-30T21:21:55Z"
+        "released_on": "2025-04-30T21:14:17Z",
+        "valid_wef": "2025-04-30T21:14:17Z",
+        "valid_til": "2025-05-01T00:14:17Z"
     },
     "areas": [
         {
@@ -609,6 +609,14 @@
             "name": "MR080416",
             "minimum_fl": 0,
             "maximum_fl": 26,
+            "start_datetime": "2025-05-01T03:00:00Z",
+            "end_datetime": "2025-05-01T11:00:00Z",
+            "remark": "MAMSL"
+        },
+        {
+            "name": "KO082400-082402",
+            "minimum_fl": 0,
+            "maximum_fl": 59,
             "start_datetime": "2025-05-01T03:00:00Z",
             "end_datetime": "2025-05-01T11:00:00Z",
             "remark": "MAMSL"
