@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "released_on": "2025-05-03T03:33:43Z",
-        "valid_wef": "2025-05-03T03:33:43Z",
-        "valid_til": "2025-05-03T06:33:43Z"
+        "released_on": "2025-05-03T06:20:27Z",
+        "valid_wef": "2025-05-03T06:20:27Z",
+        "valid_til": "2025-05-03T09:20:27Z"
     },
     "areas": [
         {
@@ -574,14 +574,6 @@
             "remark": "MAMSL"
         },
         {
-            "name": "KO082446",
-            "minimum_fl": 0,
-            "maximum_fl": 11,
-            "start_datetime": "2025-05-03T03:00:00Z",
-            "end_datetime": "2025-05-03T06:00:00Z",
-            "remark": "MAMSL"
-        },
-        {
             "name": "KO082447",
             "minimum_fl": 0,
             "maximum_fl": 13,
@@ -622,27 +614,27 @@
             "remark": "MAMSL"
         },
         {
-            "name": "082450",
-            "minimum_fl": 0,
-            "maximum_fl": 10,
-            "start_datetime": "2025-05-03T04:00:00Z",
-            "end_datetime": "2025-05-03T05:00:00Z",
-            "remark": "MAMSL"
-        },
-        {
-            "name": "KO082451",
-            "minimum_fl": 0,
-            "maximum_fl": 10,
-            "start_datetime": "2025-05-03T05:00:00Z",
-            "end_datetime": "2025-05-03T06:00:00Z",
-            "remark": "MAMSL"
-        },
-        {
             "name": "KO082453",
             "minimum_fl": 0,
             "maximum_fl": 71,
             "start_datetime": "2025-05-04T03:00:00Z",
             "end_datetime": "2025-05-05T02:59:00Z",
+            "remark": "MAMSL"
+        },
+        {
+            "name": "KO082452",
+            "minimum_fl": 0,
+            "maximum_fl": 10,
+            "start_datetime": "2025-05-03T07:00:00Z",
+            "end_datetime": "2025-05-03T10:00:00Z",
+            "remark": "MAMSL"
+        },
+        {
+            "name": "KO082461",
+            "minimum_fl": 0,
+            "maximum_fl": 11,
+            "start_datetime": "2025-05-04T01:00:00Z",
+            "end_datetime": "2025-05-04T08:00:00Z",
             "remark": "MAMSL"
         }
     ]
