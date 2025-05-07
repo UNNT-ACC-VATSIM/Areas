@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "released_on": "2025-05-07T09:17:23Z",
-        "valid_wef": "2025-05-07T09:17:23Z",
-        "valid_til": "2025-05-07T12:17:23Z"
+        "released_on": "2025-05-07T12:34:28Z",
+        "valid_wef": "2025-05-07T12:34:28Z",
+        "valid_til": "2025-05-07T15:34:28Z"
     },
     "areas": [
         {
@@ -185,16 +185,8 @@
             "name": "UNR1143",
             "minimum_fl": 0,
             "maximum_fl": 18,
-            "start_datetime": "2025-05-07T00:00:00Z",
-            "end_datetime": "2025-05-07T22:00:00Z",
-            "remark": "MAGL"
-        },
-        {
-            "name": "UNR1143",
-            "minimum_fl": 0,
-            "maximum_fl": 18,
-            "start_datetime": "2025-05-08T00:00:00Z",
-            "end_datetime": "2025-05-08T22:00:00Z",
+            "start_datetime": "2025-05-07T03:00:00Z",
+            "end_datetime": "2025-05-07T13:00:00Z",
             "remark": "MAGL"
         },
         {
@@ -478,14 +470,6 @@
             "remark": "MAMSL"
         },
         {
-            "name": "UNR1197",
-            "minimum_fl": 33,
-            "maximum_fl": 364,
-            "start_datetime": "2025-05-07T03:00:00Z",
-            "end_datetime": "2025-05-07T15:30:00Z",
-            "remark": "MAGL"
-        },
-        {
             "name": "MR080510",
             "minimum_fl": 0,
             "maximum_fl": 7,
@@ -622,22 +606,6 @@
             "remark": "MAMSL"
         },
         {
-            "name": "UNR1280",
-            "minimum_fl": 0,
-            "maximum_fl": 170,
-            "start_datetime": "2025-05-07T02:00:00Z",
-            "end_datetime": "2025-05-07T13:00:00Z",
-            "remark": "MAGL"
-        },
-        {
-            "name": "UNR1280",
-            "minimum_fl": 0,
-            "maximum_fl": 170,
-            "start_datetime": "2025-05-08T00:00:00Z",
-            "end_datetime": "2025-05-08T23:59:00Z",
-            "remark": "MAGL"
-        },
-        {
             "name": "MR080457",
             "minimum_fl": 0,
             "maximum_fl": 23,
@@ -670,22 +638,6 @@
             "remark": "MAMSL"
         },
         {
-            "name": "KO082552-082553",
-            "minimum_fl": 0,
-            "maximum_fl": 66,
-            "start_datetime": "2025-05-07T05:00:00Z",
-            "end_datetime": "2025-05-07T11:00:00Z",
-            "remark": "MAMSL"
-        },
-        {
-            "name": "KO082557",
-            "minimum_fl": 0,
-            "maximum_fl": 20,
-            "start_datetime": "2025-05-07T06:30:00Z",
-            "end_datetime": "2025-05-07T09:30:00Z",
-            "remark": "MAMSL"
-        },
-        {
             "name": "KO082558-082565",
             "minimum_fl": 0,
             "maximum_fl": 71,
@@ -694,35 +646,19 @@
             "remark": "MAGL"
         },
         {
-            "name": "KO082574",
-            "minimum_fl": 0,
-            "maximum_fl": 10,
-            "start_datetime": "2025-05-07T09:00:00Z",
-            "end_datetime": "2025-05-07T10:00:00Z",
-            "remark": "MAMSL"
-        },
-        {
-            "name": "KO082575",
-            "minimum_fl": 0,
-            "maximum_fl": 10,
-            "start_datetime": "2025-05-07T10:00:00Z",
-            "end_datetime": "2025-05-07T11:00:00Z",
-            "remark": "MAMSL"
-        },
-        {
-            "name": "KO082576",
-            "minimum_fl": 0,
-            "maximum_fl": 10,
-            "start_datetime": "2025-05-07T11:00:00Z",
-            "end_datetime": "2025-05-07T12:00:00Z",
-            "remark": "MAMSL"
-        },
-        {
             "name": "KO082577-082578",
             "minimum_fl": 0,
             "maximum_fl": 10,
             "start_datetime": "2025-05-07T09:00:00Z",
             "end_datetime": "2025-05-07T15:00:00Z",
+            "remark": "MAMSL"
+        },
+        {
+            "name": "KO082579",
+            "minimum_fl": 0,
+            "maximum_fl": 8,
+            "start_datetime": "2025-05-08T14:30:00Z",
+            "end_datetime": "2025-05-08T16:00:00Z",
             "remark": "MAMSL"
         }
     ]
