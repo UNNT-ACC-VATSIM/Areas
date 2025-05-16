@@ -18,7 +18,7 @@
             "name": "UNR1133",
             "minimum_fl": 0,
             "maximum_fl": 25,
-            "start_datetime": "s2025-05-16T05:00:00Z",
+            "start_datetime": "2025-05-16T05:00:00Z",
             "end_datetime": "2025-05-16T10:00:00Z",
             "remark": "MAMSL",
             "active_date": "2025-05-16"
