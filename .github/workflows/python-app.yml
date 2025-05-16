@@ -35,6 +35,10 @@ jobs:
       env:
         API_URL_SPPI_IVP_RF: ${{ secrets.API_URL_SPPI_IVP_RF }}
         PROXY_HTTPS_URL: ${{ secrets.PROXY_HTTPS_URL }} 
+        PROXY_HTTP: ${{ secrets.PROXY_HTTP }}
+        PROXY_HTTPS: ${{ secrets.PROXY_HTTPS }}
+        DATA_URL: ${{ secrets.DATA_URL }}
+        OUTPUT_FILE: ${{ secrets.OUTPUT_FILE }}
         PROXY_URL: ${{ secrets.PROXY_URL }}
       run: |
         python aup_upload.py  # Обновите путь, если необходимо
