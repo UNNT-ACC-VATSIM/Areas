@@ -1,186 +1,151 @@
-import json
 import requests
+import xml.etree.ElementTree as ET
+import json
 from datetime import datetime, timedelta, timezone
+import math
 import os
-import re
 
-# Функция для преобразования UNIX-времени в строку ISO 8601
-def unix_to_iso(unix_time):
-    return datetime.fromtimestamp(unix_time, tz=timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 
-# Функция для преобразования высоты в зависимости от единиц измерения
-def convert_height(value, unit):
-    if unit == "ftqne":
-        return round(value / 100)
-    elif unit in ["mamsl", "magl"]:
-        return round((value * 3.280839895) / 100)
-    else:
-        print(f"Неизвестная единица измерения: {unit}")
-        return value
+def extract_level(level_str):
+    """Извлекает числовое значение уровня из строки с округлением вверх"""
+    if not level_str:
+        return 0
 
-# Функция для удаления текста в скобках
-def remove_bracketed_text(text):
-    return re.sub(r'\([^)]*\)', '', text).strip()
+    if "AGL" in level_str or "AMSL" in level_str:
+        numeric_value = int(level_str.replace("AGL", "").replace("AMSL", ""))
+        feet_value = numeric_value * 3.28084
+        return math.ceil(feet_value / 100)
+    elif "F" in level_str:
+        return int(level_str.replace("F", ""))
+    return 0
 
-# Функция для генерации valid_wef и valid_til
-def generate_valid_times():
-    valid_wef = datetime.now(timezone.utc)
-    valid_til = valid_wef + timedelta(hours=3)
-    return valid_wef.strftime('%Y-%m-%dT%H:%M:%SZ'), valid_til.strftime('%Y-%m-%dT%H:%M:%SZ')
 
-# Настройки прокси
-proxies = {
-    "http": os.getenv("PROXY_URL"),
-    "https": os.getenv("PROXY_HTTPS_URL")
-}
+def determine_remark(level_str):
+    """Определяет примечание (remark) на основе формата уровня"""
+    if not level_str:
+        return ""
 
-# URL для получения исходных данных
-url = os.getenv("API_URL_SPPI_IVP_RF")
+    if "AGL" in level_str:
+        return "MAGL"
+    elif "AMSL" in level_str:
+        return "MAMSL"
+    elif "F" in level_str:
+        return "FL"
+    return ""
 
-# Заголовки
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
-    "Authorization": f"Bearer {os.getenv('API_TOKEN')}"
-}
 
-# Загрузка данных с сервера через прокси
-try:
-    response = requests.get(url, headers=headers, proxies=proxies)
-    response.raise_for_status()
-except requests.exceptions.RequestException as e:
-    print(f"Статус код: {response.status_code}")
-    print(f"Текст ответа: {response.text}")
-    raise Exception(f"Ошибка при загрузке данных через прокси: {e}")
+def fetch_xml_data(url, proxy_settings=None):
+    """Загружает XML данные по указанному URL с использованием прокси"""
+    try:
+        proxies = {
+            "http": proxy_settings.get("http") if proxy_settings else None,
+            "https": proxy_settings.get("https") if proxy_settings else None,
+        } if proxy_settings else None
 
-input_data = response.json()
+        response = requests.get(
+            url,
+            proxies=proxies,
+            timeout=10,
+            verify=False
+        )
+        response.raise_for_status()
+        return response.text
+    except requests.exceptions.RequestException as e:
+        print(f"Ошибка при загрузке данных: {e}")
+        return None
 
-# Определяем текущую дату и дату следующего дня
-current_date = datetime.now(timezone.utc).date()
-next_date = current_date + timedelta(days=1)
 
-# Создаем список для хранения всех зон
-output_areas = []
+def process_tra_zone(tra, target_date):
+    """Обрабатывает зону TRA и возвращает данные, если активна в target_date"""
+    zc = tra.find("zc").text.strip() if tra.find("zc") is not None else ""
 
-# Обработка каждой зоны
-for zone in input_data["data"]:
-    areas_time = zone.get("areas_time", "")
-    time_ranges = areas_time.split("\n")[1:-1]  # Убираем первую и последнюю пустые строки
+    if "UNNT" not in zc:
+        return None
 
-    for time_range in time_ranges:
-        try:
-            # Удаляем лишние пробелы и текст в скобках
-            time_range = remove_bracketed_text(time_range.strip())
-            if not time_range:
-                continue  # Пропускаем пустые строки
+    area_code = tra.find("areacode").text.strip() if tra.find("areacode") is not None else ""
+    level_from = tra.find("levelfrom").text if tra.find("levelfrom") is not None else ""
+    level_to = tra.find("levelto").text if tra.find("levelto") is not None else ""
+    date_from = tra.find("datefrom").text if tra.find("datefrom") is not None else ""
+    date_to = tra.find("dateto").text if tra.find("dateto") is not None else ""
 
-            # Проверяем формат "дата времяначало-дата времяокончания"
-            if "-" in time_range and " " in time_range:
-                parts = time_range.split("-")
-                if len(parts) == 2 and " " in parts[0] and " " in parts[1]:
-                    # Разделяем дату и время для начала и конца
-                    start_part, end_part = parts
-                    start_date_str, start_time_str = start_part.split(" ")
-                    end_date_str, end_time_str = end_part.split(" ")
+    try:
+        start_datetime = datetime.strptime(date_from, "%Y-%m-%dT%H:%MZ").replace(tzinfo=timezone.utc)
+        end_datetime = datetime.strptime(date_to, "%Y-%m-%dT%H:%MZ").replace(tzinfo=timezone.utc)
+    except ValueError:
+        print(f"Ошибка при парсинге времени: date_from={date_from}, date_to={date_to}")
+        return None
 
-                    # Преобразуем строки в объекты datetime
-                    start_datetime = datetime.strptime(f"{start_date_str} {start_time_str}", "%d.%m.%Y %H:%M").replace(tzinfo=timezone.utc)
-                    end_datetime = datetime.strptime(f"{end_date_str} {end_time_str}", "%d.%m.%Y %H:%M").replace(tzinfo=timezone.utc)
+    if start_datetime.date() <= target_date <= end_datetime.date():
+        start_datetime_iso = start_datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
+        end_datetime_iso = end_datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-                    # Проверяем, попадает ли текущая дата в диапазон
-                    if not (start_datetime.date() <= next_date and end_datetime.date() >= current_date):
-                        continue
+        remark_from = determine_remark(level_from)
+        remark_to = determine_remark(level_to)
+        remark = remark_from if remark_from == remark_to else f"{remark_from}, {remark_to}".strip(", ")
 
-                    # Добавляем зону в выходной список
-                    low_level_unit = zone["low_level"]["unit"]
-                    high_level_unit = zone["high_level"]["unit"]
+        return {
+            "name": area_code,
+            "minimum_fl": extract_level(level_from),
+            "maximum_fl": extract_level(level_to),
+            "start_datetime": start_datetime_iso,
+            "end_datetime": end_datetime_iso,
+            "remark": remark,
+            "active_date": target_date.strftime("%Y-%m-%d")
+        }
+    return None
 
-                    minimum_fl = convert_height(zone["low_level"]["value"], low_level_unit)
-                    maximum_fl = convert_height(zone["high_level"]["value"], high_level_unit)
 
-                    # Проверка на максимальное значение maximum_fl
-                    if maximum_fl > 999:
-                        maximum_fl = 999
+def main():
+    # Получаем настройки из переменных окружения
+    PROXY_SETTINGS = {
+        "http": os.getenv("PROXY_HTTP"),
+        "https": os.getenv("PROXY_HTTPS"),
+    }
 
-                    output_areas.append({
-                        "name": zone["name"],
-                        "minimum_fl": minimum_fl,
-                        "maximum_fl": maximum_fl,
-                        "start_datetime": start_datetime.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                        "end_datetime": end_datetime.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                        "remark": low_level_unit.upper()
-                    })
-                    continue
+    DATA_URL = os.getenv("DATA_URL")
+    if not DATA_URL:
+        print("Ошибка: Не указан DATA_URL в переменных окружения")
+        return
 
-            # Обработка других форматов (например, "дата-дата времяначало-времяокончания")
-            date_part, time_interval = time_range.split(" ")
+    xml_data = fetch_xml_data(DATA_URL, proxy_settings=PROXY_SETTINGS)
 
-            if "-" in date_part:
-                # Формат "дата-дата времяначало-времяокончания"
-                start_date_str, end_date_str = date_part.split("-")
-                start_time_str, end_time_str = time_interval.split("-")
+    if not xml_data:
+        print("Не удалось загрузить XML данные.")
+        return
 
-                start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
-                end_date = datetime.strptime(end_date_str, "%d.%m.%Y").date()
-            else:
-                # Формат "дата времяначало-времяокончания"
-                start_date_str = end_date_str = date_part
-                start_time_str, end_time_str = time_interval.split("-")
+    try:
+        root = ET.fromstring(xml_data)
+        today = datetime.now(timezone.utc).date()
+        tomorrow = today + timedelta(days=1)
+        areas = []
 
-                start_date = datetime.strptime(start_date_str, "%d.%m.%Y").date()
-                end_date = start_date  # Начальная и конечная дата совпадают
+        for tra in root.findall("tra"):
+            for target_date in [today, tomorrow]:
+                if zone_data := process_tra_zone(tra, target_date):
+                    areas.append(zone_data)
 
-            # Проверяем, попадает ли текущая дата в диапазон
-            if not (start_date <= next_date and end_date >= current_date):
-                continue
+        current_time = datetime.now(timezone.utc)
+        valid_wef = current_time.strftime("%Y-%m-%dT%H:%M:%SZ")
+        valid_til = (current_time + timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-            current_date_in_range = max(start_date, current_date)
-            while current_date_in_range <= min(end_date, next_date):
-                day_start = current_date_in_range.strftime("%Y-%m-%d") + "T" + start_time_str + ":00Z"
-                day_end = current_date_in_range.strftime("%Y-%m-%d") + "T" + end_time_str + ":00Z"
+        result = {
+            "notice_info": {
+                "valid_wef": valid_wef,
+                "valid_til": valid_til,
+                "released_on": valid_wef
+            },
+            "areas": areas
+        }
 
-                low_level_unit = zone["low_level"]["unit"]
-                high_level_unit = zone["high_level"]["unit"]
+        output_file = os.getenv("OUTPUT_FILE", "output.json")
+        with open(output_file, "w", encoding="utf-8") as json_file:
+            json.dump(result, json_file, indent=4, ensure_ascii=False)
 
-                minimum_fl = convert_height(zone["low_level"]["value"], low_level_unit)
-                maximum_fl = convert_height(zone["high_level"]["value"], high_level_unit)
+        print(f"Данные успешно сохранены в {output_file}")
 
-                # Проверка на максимальное значение maximum_fl
-                if maximum_fl > 999:
-                    maximum_fl = 999
+    except Exception as e:
+        print(f"Ошибка при обработке XML данных: {e}")
 
-                output_areas.append({
-                    "name": zone["name"],
-                    "minimum_fl": minimum_fl,
-                    "maximum_fl": maximum_fl,
-                    "start_datetime": day_start,
-                    "end_datetime": day_end,
-                    "remark": low_level_unit.upper()
-                })
 
-                current_date_in_range += timedelta(days=1)
-
-        except ValueError as e:
-            print(f"Ошибка при обработке временного интервала '{time_range}': {e}")
-            continue
-
-# Генерация valid_wef и valid_til
-valid_wef, valid_til = generate_valid_times()
-
-# Формируем итоговый JSON
-output_data = {
-    "notice_info": {
-        "released_on": unix_to_iso(int(datetime.now(timezone.utc).timestamp())),
-        "valid_wef": valid_wef,
-        "valid_til": valid_til
-    },
-    "areas": output_areas
-}
-
-# Запись результата в файл output.json
-with open("output.json", "w", encoding="utf-8") as file:
-    json.dump(output_data, file, ensure_ascii=False, indent=4)
-
-# Вывод содержимого файла output.json
-print("Итоговый файл output.json:")
-with open("output.json", "r", encoding="utf-8") as file:
-    print(file.read())
+if __name__ == "__main__":
+    main()
