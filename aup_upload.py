@@ -1,20 +1,18 @@
+import os
 import requests
 import xml.etree.ElementTree as ET
 import json
 from datetime import datetime, timedelta, timezone
-import math
-import os
 
 
 def extract_level(level_str):
-    """Извлекает числовое значение уровня из строки с округлением вверх"""
+    """Извлекает числовое значение уровня из строки"""
     if not level_str:
         return 0
 
     if "AGL" in level_str or "AMSL" in level_str:
         numeric_value = int(level_str.replace("AGL", "").replace("AMSL", ""))
-        feet_value = numeric_value * 3.28084
-        return math.ceil(feet_value / 100)
+        return int((numeric_value * 3.280839895) / 100)
     elif "F" in level_str:
         return int(level_str.replace("F", ""))
     return 0
@@ -34,17 +32,21 @@ def determine_remark(level_str):
     return ""
 
 
-def fetch_xml_data(url, proxy_settings=None):
-    """Загружает XML данные по указанному URL с использованием прокси"""
+def fetch_xml_data():
+    """Загружает XML данные из URL, указанного в переменных окружения"""
     try:
-        proxies = {
-            "http": proxy_settings.get("http") if proxy_settings else None,
-            "https": proxy_settings.get("https") if proxy_settings else None,
-        } if proxy_settings else None
+        url = os.getenv("XML_DATA_URL")
+        if not url:
+            raise ValueError("XML_DATA_URL не указан в переменных окружения")
+
+        proxy_settings = {
+            "http": os.getenv("HTTP_PROXY"),
+            "https": os.getenv("HTTPS_PROXY"),
+        } if os.getenv("USE_PROXY", "false").lower() == "true" else None
 
         response = requests.get(
             url,
-            proxies=proxies,
+            proxies=proxy_settings,
             timeout=10,
             verify=False
         )
@@ -52,6 +54,9 @@ def fetch_xml_data(url, proxy_settings=None):
         return response.text
     except requests.exceptions.RequestException as e:
         print(f"Ошибка при загрузке данных: {e}")
+        return None
+    except ValueError as e:
+        print(f"Ошибка конфигурации: {e}")
         return None
 
 
@@ -96,18 +101,8 @@ def process_tra_zone(tra, target_date):
 
 
 def main():
-    # Получаем настройки из переменных окружения
-    PROXY_SETTINGS = {
-        "http": os.getenv("PROXY_HTTP"),
-        "https": os.getenv("PROXY_HTTPS"),
-    }
-
-    DATA_URL = os.getenv("DATA_URL")
-    if not DATA_URL:
-        print("Ошибка: Не указан DATA_URL в переменных окружения")
-        return
-
-    xml_data = fetch_xml_data(DATA_URL, proxy_settings=PROXY_SETTINGS)
+    # Загружаем XML данные
+    xml_data = fetch_xml_data()
 
     if not xml_data:
         print("Не удалось загрузить XML данные.")
@@ -120,9 +115,13 @@ def main():
         areas = []
 
         for tra in root.findall("tra"):
-            for target_date in [today, tomorrow]:
-                if zone_data := process_tra_zone(tra, target_date):
-                    areas.append(zone_data)
+            today_data = process_tra_zone(tra, today)
+            if today_data:
+                areas.append(today_data)
+
+            tomorrow_data = process_tra_zone(tra, tomorrow)
+            if tomorrow_data:
+                areas.append(tomorrow_data)
 
         current_time = datetime.now(timezone.utc)
         valid_wef = current_time.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -137,11 +136,10 @@ def main():
             "areas": areas
         }
 
-        output_file = os.getenv("OUTPUT_FILE", "output.json")
-        with open(output_file, "w", encoding="utf-8") as json_file:
+        with open("output.json", "w", encoding="utf-8") as json_file:
             json.dump(result, json_file, indent=4, ensure_ascii=False)
 
-        print(f"Данные успешно сохранены в {output_file}")
+        print("Данные успешно сохранены в output.json")
 
     except Exception as e:
         print(f"Ошибка при обработке XML данных: {e}")
