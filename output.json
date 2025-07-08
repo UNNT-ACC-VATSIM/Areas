@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "valid_wef": "2025-07-08T06:25:20Z",
-        "valid_til": "2025-07-08T07:25:20Z",
-        "released_on": "2025-07-08T06:25:20Z"
+        "valid_wef": "2025-07-08T09:19:16Z",
+        "valid_til": "2025-07-08T10:19:16Z",
+        "released_on": "2025-07-08T09:19:16Z"
     },
     "areas": [
         {
@@ -279,8 +279,8 @@
             "name": "UNR1280",
             "minimum_fl": 0,
             "maximum_fl": 170,
-            "start_datetime": "2025-07-09T00:00:00Z",
-            "end_datetime": "2025-07-09T23:59:00Z",
+            "start_datetime": "2025-07-09T10:00:00Z",
+            "end_datetime": "2025-07-09T21:00:00Z",
             "remark": "FL",
             "active_date": "2025-07-09"
         },
@@ -424,16 +424,7 @@
             "minimum_fl": 0,
             "maximum_fl": 60,
             "start_datetime": "2025-07-09T02:00:00Z",
-            "end_datetime": "2025-07-09T21:00:00Z",
-            "remark": "FL",
-            "active_date": "2025-07-09"
-        },
-        {
-            "name": "UNR1974",
-            "minimum_fl": 0,
-            "maximum_fl": 140,
-            "start_datetime": "2025-07-09T02:00:00Z",
-            "end_datetime": "2025-07-09T21:00:00Z",
+            "end_datetime": "2025-07-09T19:00:00Z",
             "remark": "FL",
             "active_date": "2025-07-09"
         },
@@ -450,8 +441,8 @@
             "name": "UNR1975",
             "minimum_fl": 0,
             "maximum_fl": 29,
-            "start_datetime": "2025-07-09T02:00:00Z",
-            "end_datetime": "2025-07-09T21:00:00Z",
+            "start_datetime": "2025-07-09T09:00:00Z",
+            "end_datetime": "2025-07-09T19:00:00Z",
             "remark": "MAGL",
             "active_date": "2025-07-09"
         },
@@ -468,8 +459,8 @@
             "name": "UNR1976",
             "minimum_fl": 0,
             "maximum_fl": 29,
-            "start_datetime": "2025-07-09T02:00:00Z",
-            "end_datetime": "2025-07-09T21:00:00Z",
+            "start_datetime": "2025-07-09T09:00:00Z",
+            "end_datetime": "2025-07-09T19:00:00Z",
             "remark": "MAGL",
             "active_date": "2025-07-09"
         },
