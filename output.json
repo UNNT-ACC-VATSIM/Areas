@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "valid_wef": "2025-08-14T06:26:42Z",
-        "valid_til": "2025-08-14T07:26:42Z",
-        "released_on": "2025-08-14T06:26:42Z"
+        "valid_wef": "2025-08-14T09:20:03Z",
+        "valid_til": "2025-08-14T10:20:03Z",
+        "released_on": "2025-08-14T09:20:03Z"
     },
     "areas": [
         {
@@ -144,15 +144,6 @@
             "name": "UNR1196",
             "minimum_fl": 3,
             "maximum_fl": 593,
-            "start_datetime": "2025-08-14T03:00:00Z",
-            "end_datetime": "2025-08-14T15:30:00Z",
-            "remark": "MAGL",
-            "active_date": "2025-08-14"
-        },
-        {
-            "name": "UNR1196",
-            "minimum_fl": 3,
-            "maximum_fl": 593,
             "start_datetime": "2025-08-15T03:00:00Z",
             "end_datetime": "2025-08-15T15:30:00Z",
             "remark": "MAGL",
@@ -166,15 +157,6 @@
             "end_datetime": "2025-08-15T15:30:00Z",
             "remark": "MAGL",
             "active_date": "2025-08-15"
-        },
-        {
-            "name": "UNR1242",
-            "minimum_fl": 0,
-            "maximum_fl": 14,
-            "start_datetime": "2025-08-14T06:00:00Z",
-            "end_datetime": "2025-08-14T10:00:00Z",
-            "remark": "MAMSL",
-            "active_date": "2025-08-14"
         },
         {
             "name": "UNR1242",
@@ -243,7 +225,7 @@
             "name": "UNR1276",
             "minimum_fl": 0,
             "maximum_fl": 70,
-            "start_datetime": "2025-08-14T06:30:00Z",
+            "start_datetime": "2025-08-14T06:45:00Z",
             "end_datetime": "2025-08-14T19:00:00Z",
             "remark": "FL",
             "active_date": "2025-08-14"
@@ -273,24 +255,6 @@
             "start_datetime": "2025-08-15T07:00:00Z",
             "end_datetime": "2025-08-15T10:00:00Z",
             "remark": "MAMSL",
-            "active_date": "2025-08-15"
-        },
-        {
-            "name": "UNR1280",
-            "minimum_fl": 0,
-            "maximum_fl": 170,
-            "start_datetime": "2025-08-14T09:00:00Z",
-            "end_datetime": "2025-08-14T20:00:00Z",
-            "remark": "FL",
-            "active_date": "2025-08-14"
-        },
-        {
-            "name": "UNR1280",
-            "minimum_fl": 0,
-            "maximum_fl": 300,
-            "start_datetime": "2025-08-15T00:00:00Z",
-            "end_datetime": "2025-08-15T23:59:00Z",
-            "remark": "FL",
             "active_date": "2025-08-15"
         },
         {
