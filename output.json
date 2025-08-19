@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "valid_wef": "2025-08-19T15:17:30Z",
-        "valid_til": "2025-08-19T16:17:30Z",
-        "released_on": "2025-08-19T15:17:30Z"
+        "valid_wef": "2025-08-19T18:21:40Z",
+        "valid_til": "2025-08-19T19:21:40Z",
+        "released_on": "2025-08-19T18:21:40Z"
     },
     "areas": [
         {
@@ -198,15 +198,6 @@
             "name": "UNR1285",
             "minimum_fl": 0,
             "maximum_fl": 32,
-            "start_datetime": "2025-08-19T03:00:00Z",
-            "end_datetime": "2025-08-19T18:00:00Z",
-            "remark": "MAMSL",
-            "active_date": "2025-08-19"
-        },
-        {
-            "name": "UNR1285",
-            "minimum_fl": 0,
-            "maximum_fl": 32,
             "start_datetime": "2025-08-20T03:00:00Z",
             "end_datetime": "2025-08-20T18:00:00Z",
             "remark": "MAMSL",
@@ -265,15 +256,6 @@
             "end_datetime": "2025-08-20T10:00:00Z",
             "remark": "MAMSL",
             "active_date": "2025-08-20"
-        },
-        {
-            "name": "UNR1945",
-            "minimum_fl": 0,
-            "maximum_fl": 19,
-            "start_datetime": "2025-08-19T08:00:00Z",
-            "end_datetime": "2025-08-19T17:00:00Z",
-            "remark": "MAGL",
-            "active_date": "2025-08-19"
         },
         {
             "name": "UNR1945",
