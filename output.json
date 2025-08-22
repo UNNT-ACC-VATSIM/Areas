@@ -1,19 +1,10 @@
 {
     "notice_info": {
-        "valid_wef": "2025-08-22T12:32:29Z",
-        "valid_til": "2025-08-22T13:32:29Z",
-        "released_on": "2025-08-22T12:32:29Z"
+        "valid_wef": "2025-08-22T15:16:32Z",
+        "valid_til": "2025-08-22T16:16:32Z",
+        "released_on": "2025-08-22T15:16:32Z"
     },
     "areas": [
-        {
-            "name": "UNR1136",
-            "minimum_fl": 0,
-            "maximum_fl": 259,
-            "start_datetime": "2025-08-22T01:00:00Z",
-            "end_datetime": "2025-08-22T19:00:00Z",
-            "remark": "MAGL",
-            "active_date": "2025-08-22"
-        },
         {
             "name": "UNR1136",
             "minimum_fl": 0,
