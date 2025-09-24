@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "valid_wef": "2025-09-24T06:23:37Z",
-        "valid_til": "2025-09-24T07:23:37Z",
-        "released_on": "2025-09-24T06:23:37Z"
+        "valid_wef": "2025-09-24T09:17:10Z",
+        "valid_til": "2025-09-24T10:17:10Z",
+        "released_on": "2025-09-24T09:17:10Z"
     },
     "areas": [
         {
@@ -150,24 +150,6 @@
             "active_date": "2025-09-25"
         },
         {
-            "name": "UNR1196",
-            "minimum_fl": 3,
-            "maximum_fl": 593,
-            "start_datetime": "2025-09-25T03:00:00Z",
-            "end_datetime": "2025-09-25T14:00:00Z",
-            "remark": "MAGL",
-            "active_date": "2025-09-25"
-        },
-        {
-            "name": "UNR1197",
-            "minimum_fl": 32,
-            "maximum_fl": 364,
-            "start_datetime": "2025-09-25T03:00:00Z",
-            "end_datetime": "2025-09-25T14:00:00Z",
-            "remark": "MAGL",
-            "active_date": "2025-09-25"
-        },
-        {
             "name": "UNR1242",
             "minimum_fl": 0,
             "maximum_fl": 14,
@@ -243,15 +225,6 @@
             "name": "UNR1276",
             "minimum_fl": 0,
             "maximum_fl": 70,
-            "start_datetime": "2025-09-24T06:30:00Z",
-            "end_datetime": "2025-09-24T19:00:00Z",
-            "remark": "FL",
-            "active_date": "2025-09-24"
-        },
-        {
-            "name": "UNR1276",
-            "minimum_fl": 0,
-            "maximum_fl": 70,
             "start_datetime": "2025-09-25T02:00:00Z",
             "end_datetime": "2025-09-25T19:00:00Z",
             "remark": "FL",
@@ -278,9 +251,9 @@
         {
             "name": "UNR1280",
             "minimum_fl": 0,
-            "maximum_fl": 300,
-            "start_datetime": "2025-09-25T00:00:00Z",
-            "end_datetime": "2025-09-25T23:59:00Z",
+            "maximum_fl": 170,
+            "start_datetime": "2025-09-25T07:00:00Z",
+            "end_datetime": "2025-09-25T18:00:00Z",
             "remark": "FL",
             "active_date": "2025-09-25"
         },
