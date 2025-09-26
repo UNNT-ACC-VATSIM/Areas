@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "valid_wef": "2025-09-26T06:23:17Z",
-        "valid_til": "2025-09-26T07:23:17Z",
-        "released_on": "2025-09-26T06:23:17Z"
+        "valid_wef": "2025-09-26T09:17:20Z",
+        "valid_til": "2025-09-26T10:17:20Z",
+        "released_on": "2025-09-26T09:17:20Z"
     },
     "areas": [
         {
@@ -198,7 +198,7 @@
             "name": "UNR1917",
             "minimum_fl": 0,
             "maximum_fl": 6,
-            "start_datetime": "2025-09-26T03:00:00Z",
+            "start_datetime": "2025-09-26T06:34:00Z",
             "end_datetime": "2025-09-26T11:00:00Z",
             "remark": "MAMSL",
             "active_date": "2025-09-26"
