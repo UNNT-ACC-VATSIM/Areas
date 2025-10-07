@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "valid_wef": "2025-10-07T06:24:00Z",
-        "valid_til": "2025-10-07T07:24:00Z",
-        "released_on": "2025-10-07T06:24:00Z"
+        "valid_wef": "2025-10-07T09:17:22Z",
+        "valid_til": "2025-10-07T10:17:22Z",
+        "released_on": "2025-10-07T09:17:22Z"
     },
     "areas": [
         {
@@ -150,24 +150,6 @@
             "active_date": "2025-10-08"
         },
         {
-            "name": "UNR1196",
-            "minimum_fl": 3,
-            "maximum_fl": 593,
-            "start_datetime": "2025-10-08T03:00:00Z",
-            "end_datetime": "2025-10-08T13:00:00Z",
-            "remark": "MAGL",
-            "active_date": "2025-10-08"
-        },
-        {
-            "name": "UNR1197",
-            "minimum_fl": 32,
-            "maximum_fl": 364,
-            "start_datetime": "2025-10-08T03:00:00Z",
-            "end_datetime": "2025-10-08T13:00:00Z",
-            "remark": "MAGL",
-            "active_date": "2025-10-08"
-        },
-        {
             "name": "UNR1242",
             "minimum_fl": 0,
             "maximum_fl": 14,
@@ -287,9 +269,9 @@
         {
             "name": "UNR1280",
             "minimum_fl": 0,
-            "maximum_fl": 300,
-            "start_datetime": "2025-10-08T00:00:00Z",
-            "end_datetime": "2025-10-08T23:59:00Z",
+            "maximum_fl": 170,
+            "start_datetime": "2025-10-08T06:00:00Z",
+            "end_datetime": "2025-10-08T17:00:00Z",
             "remark": "FL",
             "active_date": "2025-10-08"
         },
@@ -438,15 +420,6 @@
             "active_date": "2025-10-08"
         },
         {
-            "name": "UNR1974",
-            "minimum_fl": 0,
-            "maximum_fl": 140,
-            "start_datetime": "2025-10-08T02:00:00Z",
-            "end_datetime": "2025-10-08T18:00:00Z",
-            "remark": "FL",
-            "active_date": "2025-10-08"
-        },
-        {
             "name": "UNR1975",
             "minimum_fl": 0,
             "maximum_fl": 29,
@@ -459,16 +432,7 @@
             "name": "UNR1975",
             "minimum_fl": 0,
             "maximum_fl": 29,
-            "start_datetime": "2025-10-08T02:00:00Z",
-            "end_datetime": "2025-10-08T18:00:00Z",
-            "remark": "MAGL",
-            "active_date": "2025-10-08"
-        },
-        {
-            "name": "UNR1976",
-            "minimum_fl": 0,
-            "maximum_fl": 29,
-            "start_datetime": "2025-10-08T02:00:00Z",
+            "start_datetime": "2025-10-08T07:00:00Z",
             "end_datetime": "2025-10-08T18:00:00Z",
             "remark": "MAGL",
             "active_date": "2025-10-08"
