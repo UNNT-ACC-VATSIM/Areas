@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "valid_wef": "2025-10-08T12:34:15Z",
-        "valid_til": "2025-10-08T13:34:15Z",
-        "released_on": "2025-10-08T12:34:15Z"
+        "valid_wef": "2025-10-08T15:16:44Z",
+        "valid_til": "2025-10-08T16:16:44Z",
+        "released_on": "2025-10-08T15:16:44Z"
     },
     "areas": [
         {
@@ -13,15 +13,6 @@
             "end_datetime": "2025-10-09T10:00:00Z",
             "remark": "MAMSL",
             "active_date": "2025-10-09"
-        },
-        {
-            "name": "UNR1136",
-            "minimum_fl": 0,
-            "maximum_fl": 259,
-            "start_datetime": "2025-10-08T01:00:00Z",
-            "end_datetime": "2025-10-08T19:00:00Z",
-            "remark": "MAGL",
-            "active_date": "2025-10-08"
         },
         {
             "name": "UNR1136",
