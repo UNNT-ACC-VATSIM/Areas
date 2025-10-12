@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "valid_wef": "2025-10-12T03:31:27Z",
-        "valid_til": "2025-10-12T04:31:27Z",
-        "released_on": "2025-10-12T03:31:27Z"
+        "valid_wef": "2025-10-12T06:21:00Z",
+        "valid_til": "2025-10-12T07:21:00Z",
+        "released_on": "2025-10-12T06:21:00Z"
     },
     "areas": [
         {
@@ -100,7 +100,7 @@
             "minimum_fl": 3,
             "maximum_fl": 593,
             "start_datetime": "2025-10-13T03:00:00Z",
-            "end_datetime": "2025-10-13T13:00:00Z",
+            "end_datetime": "2025-10-13T14:00:00Z",
             "remark": "MAGL",
             "active_date": "2025-10-13"
         },
@@ -109,7 +109,7 @@
             "minimum_fl": 32,
             "maximum_fl": 364,
             "start_datetime": "2025-10-13T03:00:00Z",
-            "end_datetime": "2025-10-13T13:00:00Z",
+            "end_datetime": "2025-10-13T14:00:00Z",
             "remark": "MAGL",
             "active_date": "2025-10-13"
         },
