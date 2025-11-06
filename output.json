@@ -1,8 +1,8 @@
 {
     "notice_info": {
-        "valid_wef": "2025-11-06T06:25:26Z",
-        "valid_til": "2025-11-06T07:25:26Z",
-        "released_on": "2025-11-06T06:25:26Z"
+        "valid_wef": "2025-11-06T09:18:42Z",
+        "valid_til": "2025-11-06T10:18:42Z",
+        "released_on": "2025-11-06T09:18:42Z"
     },
     "areas": [
         {
@@ -303,15 +303,6 @@
             "active_date": "2025-11-07"
         },
         {
-            "name": "UNR1280",
-            "minimum_fl": 0,
-            "maximum_fl": 170,
-            "start_datetime": "2025-11-07T00:00:00Z",
-            "end_datetime": "2025-11-07T23:59:00Z",
-            "remark": "MAMSL, FL",
-            "active_date": "2025-11-07"
-        },
-        {
             "name": "UNR1917",
             "minimum_fl": 0,
             "maximum_fl": 6,
@@ -429,25 +420,7 @@
             "active_date": "2025-11-07"
         },
         {
-            "name": "UNR1974",
-            "minimum_fl": 0,
-            "maximum_fl": 140,
-            "start_datetime": "2025-11-07T01:00:00Z",
-            "end_datetime": "2025-11-07T18:00:00Z",
-            "remark": "FL",
-            "active_date": "2025-11-07"
-        },
-        {
             "name": "UNR1975",
-            "minimum_fl": 0,
-            "maximum_fl": 29,
-            "start_datetime": "2025-11-07T01:00:00Z",
-            "end_datetime": "2025-11-07T18:00:00Z",
-            "remark": "MAGL",
-            "active_date": "2025-11-07"
-        },
-        {
-            "name": "UNR1976",
             "minimum_fl": 0,
             "maximum_fl": 29,
             "start_datetime": "2025-11-07T01:00:00Z",
