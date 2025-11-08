@@ -1,8 +1,6 @@
 name: Run aup_upload Script
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
   schedule:
